@@ -3,7 +3,7 @@ using Ink.Runtime;
 using UnityEngine;
 using UnityEngine.UI;
 
-// This is a super bare bones example of how to play and display a ink story in Unity.
+// This is a super bare-bones example of how to play and display a ink story in Unity.
 public class BasicInkExample : MonoBehaviour {
     public static event Action<Story> OnCreateStory;
 	
@@ -63,7 +63,7 @@ public class BasicInkExample : MonoBehaviour {
 		RefreshView();
 	}
 
-	// Creates a textbox showing the the line of text
+	// Creates a textbox showing the line of text
 	void CreateContentView (string text) {
 		Text storyText = Instantiate (textPrefab) as Text;
 		storyText.text = text;

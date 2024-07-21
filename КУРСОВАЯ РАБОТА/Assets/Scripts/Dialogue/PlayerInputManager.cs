@@ -17,7 +17,7 @@ public class PlayerInputManager : MonoBehaviour
     }
     public bool CanPlayerMove()
     {
-        return !_manager.DialogueIsPlaying;
+        return _manager == null || !_manager.dialogueIsPlaying;
     }
     public void InteractButtonPressed(InputAction.CallbackContext context)
     {

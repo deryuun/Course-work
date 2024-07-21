@@ -28,7 +28,7 @@ public class DialogueManager : MonoBehaviour
     
     private Story _currentStory;
 
-    public bool DialogueIsPlaying { get; private set; }
+    public bool dialogueIsPlaying { get; private set; }
     private static DialogueManager _instance;
 
     private Coroutine _displayLineCoroutine;
@@ -51,7 +51,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Start()
     {
-        DialogueIsPlaying = false;
+        dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
         
         _choicesText = new TextMeshProUGUI[choices.Length];
@@ -65,7 +65,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Update() 
     {
-        if (!DialogueIsPlaying) 
+        if (!dialogueIsPlaying) 
         {
             return;
         }
@@ -81,7 +81,7 @@ public class DialogueManager : MonoBehaviour
     public void EnterDialogueMode(TextAsset inkJSON)
     {
         _currentStory = new Story(inkJSON.text);
-        DialogueIsPlaying = true;
+        dialogueIsPlaying = true;
         dialoguePanel.SetActive(true);
         
         ContinueStory();
@@ -89,7 +89,7 @@ public class DialogueManager : MonoBehaviour
     
     private void ExitDialogueMode() 
     {
-        DialogueIsPlaying = false;
+        dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
     }
