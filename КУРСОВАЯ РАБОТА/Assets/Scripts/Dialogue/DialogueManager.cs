@@ -148,8 +148,7 @@ public class DialogueManager : MonoBehaviour
     
             string key = splittedTag[0];
             string value = splittedTag[1];
-                
-            // можно добавить больше тегов в дальнейшем, но пока достаточно этого
+            
             if (key == "speaker")
             {
                 speakerNameText.text = value;

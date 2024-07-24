@@ -17,10 +17,12 @@ public class PlayerInputManager : MonoBehaviour
     }
     public bool CanPlayerMove()
     {
-        return _manager == null || !_manager.dialogueIsPlaying;
+        return _manager == null || !_manager.dialogueIsPlaying || PauseMenu.gameIsPaused;
     }
     public void InteractButtonPressed(InputAction.CallbackContext context)
     {
+        if(PauseMenu.gameIsPaused) return;
+        
         if (context.performed)
         {
             _interactPressed = true;
