@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerPlayerController : MonoBehaviour
+public class OrdinaryPlayerController : MonoBehaviour
 {
     // Variables
     [SerializeField] private float speed = 6;
@@ -10,6 +10,7 @@ public class PowerPlayerController : MonoBehaviour
     private string _currentAnimation;
     
     // Component references
+    private PlayerInputManager _inputManager;
     private Vector2 _direction;
     private Rigidbody2D _rb;
     public Animator animator;
@@ -20,16 +21,23 @@ public class PowerPlayerController : MonoBehaviour
         transform.position = pos.initialValue;
         _rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        _inputManager = FindObjectOfType<PlayerInputManager>();
     }
 
     
     void Update()
     {
+        if (!_inputManager.CanPlayerMove())
+        {
+            ChangeAnimation("AnimationIdle");
+            _direction = Vector2.zero; 
+             return; 
+        }
         Move();
         ReflectPlayer();
     }
 
-    void ChangeAnimation(string animation)
+    public void ChangeAnimation(string animation)
     {
         if (_currentAnimation == animation) return;
         
@@ -44,11 +52,11 @@ public class PowerPlayerController : MonoBehaviour
 
         if (_direction.x != 0 || _direction.y != 0)
         {
-            ChangeAnimation("Animation Run");
+            ChangeAnimation("AnimationWalk");
         }
         else
         {
-            ChangeAnimation("Animation Idle");
+            ChangeAnimation("AnimationIdle");
         }
     }
     void FixedUpdate()
@@ -61,8 +69,9 @@ public class PowerPlayerController : MonoBehaviour
         if ((_direction.x > 0 && !_faceRight) ||
             (_direction.x < 0 && _faceRight))
         {
-            transform.localScale *= new Vector2(-1, 1);
+            /*transform.localScale *= new Vector2(-1, 1);*/
             _faceRight = !_faceRight;
+            transform.Rotate(0f, 180f, 0f);
         }
     }
 }

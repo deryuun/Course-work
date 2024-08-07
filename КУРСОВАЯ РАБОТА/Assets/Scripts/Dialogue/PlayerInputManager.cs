@@ -17,13 +17,11 @@ public class PlayerInputManager : MonoBehaviour
     }
     public bool CanPlayerMove()
     {
-        return _manager == null || !_manager.dialogueIsPlaying || PauseMenu.gameIsPaused;
+        return (_manager == null || !_manager.dialogueIsPlaying) && !PauseMenu.pauseGame;
     }
     public void InteractButtonPressed(InputAction.CallbackContext context)
     {
-        if(PauseMenu.gameIsPaused) return;
-        
-        if (context.performed)
+        if (context.performed && !PauseMenu.pauseGame)
         {
             _interactPressed = true;
         }
@@ -34,7 +32,7 @@ public class PlayerInputManager : MonoBehaviour
     }
     public void Submit(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !PauseMenu.pauseGame)
         {
             _submitPressed = true;
         }
@@ -46,6 +44,10 @@ public class PlayerInputManager : MonoBehaviour
 
     public bool GetSubmitPressed() 
     {
+        if(PauseMenu.pauseGame)
+        {
+            return false;
+        }
         bool result = _submitPressed;
         _submitPressed = false;
         return result;
@@ -53,6 +55,10 @@ public class PlayerInputManager : MonoBehaviour
     
     public bool GetInteractPressed() 
     {
+        if(PauseMenu.pauseGame)
+        {
+            return false;
+        }
         bool result = _interactPressed;
         _interactPressed = false;
         return result;

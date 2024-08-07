@@ -1,0 +1,109 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PowerPlayerController : MonoBehaviour
+{
+    // Variables
+    [SerializeField] private float speed = 6;
+    private bool _faceRight = true;
+    private string _currentAnimation;
+    public bool isFrozen = false;
+    
+    // Component references
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+    public Color freezeColor;
+    private Vector2 _direction;
+    private Rigidbody2D _rb;
+    public Animator animator;
+    public VectorValue pos;
+
+    void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
+        transform.position = pos.initialValue;
+        _rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+    }
+
+    
+    void Update()
+    {
+        if (!isFrozen)
+        {
+            Move();
+            ReflectPlayer();
+        }
+        else
+        {
+            ChangeAnimation("Animation Idle");
+        }
+    }
+
+    void ChangeAnimation(string animation)
+    {
+        if (_currentAnimation == animation) return;
+        
+        animator.Play(animation);
+        _currentAnimation = animation;
+    }
+
+    void Move()
+    {
+        _direction.x = Input.GetAxisRaw("Horizontal");
+        _direction.y = Input.GetAxisRaw("Vertical");
+
+        if (_direction.x != 0 || _direction.y != 0)
+        {
+            ChangeAnimation("Animation Run");
+        }
+        else
+        {
+            ChangeAnimation("Animation Idle");
+        }
+    }
+    void FixedUpdate()
+    {
+        if (!isFrozen)
+        {
+            _rb.MovePosition(_rb.position + speed * Time.fixedDeltaTime * _direction);
+        }
+    }
+    
+    public void FreezePlayer(float duration)
+    {
+        if (!isFrozen)
+        {
+            StartCoroutine(Freeze(duration));
+        }
+    }
+
+    private IEnumerator Freeze(float duration)
+    {
+        isFrozen = true;
+        ChangeColor(freezeColor); 
+        yield return new WaitForSeconds(duration);
+        isFrozen = false;
+        ChangeColor(originalColor);
+    }
+    
+    private void ChangeColor(Color color)
+    {
+        Debug.Log("Changing color to: " + color);
+        spriteRenderer.color = color;
+    }
+
+    void ReflectPlayer()
+    {
+        if ((_direction.x > 0 && !_faceRight) ||
+            (_direction.x < 0 && _faceRight))
+        {
+            /*transform.localScale *= new Vector2(-1, 1);*/
+            _faceRight = !_faceRight;
+            transform.Rotate(0f, 180f, 0f);
+        }
+    }
+}
