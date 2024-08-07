@@ -5,8 +5,13 @@ using UnityEngine;
 
 public class EnemyMagic : MonoBehaviour
 {
-    public float speed = 20f;
-    public int damage = 40;
+    public float speed;
+    public int damage;
+    public bool isFire;
+    public float initialDamage;
+    public float burnDamage;
+    public float duration;
+    
     public Rigidbody2D rb;
     public GameObject impactEffect;
     void Start()
@@ -21,7 +26,14 @@ public class EnemyMagic : MonoBehaviour
             PlayerHealth player = hitInfo.GetComponent<PlayerHealth>();
             if (player != null)
             {
-                player.TakeDamage(damage);
+                if (isFire)
+                {
+                    player.GetComponent<PlayerHealth>().ApplyBurnEffect(initialDamage, burnDamage, duration);
+                }
+                else
+                {
+                    player.TakeDamage(damage);
+                }
             }
 
             Instantiate(impactEffect, transform.position, Quaternion.identity);

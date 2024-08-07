@@ -7,6 +7,7 @@ public class PowerPlayerController : MonoBehaviour
 {
     // Variables
     [SerializeField] private float speed = 6;
+    private float currentSpeed;
     private bool _faceRight = true;
     private string _currentAnimation;
     public bool isFrozen = false;
@@ -27,6 +28,7 @@ public class PowerPlayerController : MonoBehaviour
         transform.position = pos.initialValue;
         _rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        currentSpeed = speed;
     }
 
     
@@ -69,8 +71,20 @@ public class PowerPlayerController : MonoBehaviour
     {
         if (!isFrozen)
         {
-            _rb.MovePosition(_rb.position + speed * Time.fixedDeltaTime * _direction);
+            _rb.MovePosition(_rb.position + currentSpeed * Time.fixedDeltaTime * _direction);
         }
+    }
+    
+    public void ModifySpeed(float factor, float duration)
+    {
+        StartCoroutine(SpeedModifier(factor, duration));
+    }
+
+    private IEnumerator SpeedModifier(float factor, float duration)
+    {
+        currentSpeed *= factor;
+        yield return new WaitForSeconds(duration);
+        currentSpeed = speed;
     }
     
     public void FreezePlayer(float duration)

@@ -55,6 +55,23 @@ public class PlayerHealth : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
     
+    public void ApplyBurnEffect(float initialDamage, float burnDamage, float duration)
+    {
+        TakeDamage(initialDamage);
+        StartCoroutine(Burn(burnDamage, duration));
+    }
+
+    private IEnumerator Burn(float damage, float duration)
+    {
+        int count = 3;  
+        while (count > 0)
+        {
+            TakeDamage(damage);
+            yield return new WaitForSeconds(duration / 4);  
+            count--;
+        }
+    }
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Potion"))

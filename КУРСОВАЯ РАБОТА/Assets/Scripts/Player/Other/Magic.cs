@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Magic : MonoBehaviour
 {
-    public float speed = 20f;
-    public int damage = 40;
+    public float speed;
+    public int damage;
     public Rigidbody2D rb;
     public GameObject impactEffect;
     void Start()

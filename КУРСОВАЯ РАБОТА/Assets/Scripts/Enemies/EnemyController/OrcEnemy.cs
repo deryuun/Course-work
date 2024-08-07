@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class OrcEnemy : Enemy
 {
-    public float attackDistance = 1.5f; // Расстояние для начала атаки
-    public float attackCooldown = 5f; // Пауза между атаками
+    public float attackDistance = 1.5f;
+    public float attackCooldown = 5f; 
     public float damage;
 
     private bool _isAttacking = false;
@@ -35,25 +35,23 @@ public class OrcEnemy : Enemy
     {
         Vector3 targetPosition = player.transform.position;
         transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-        ChangeAnimation("OrcWalk"); // Анимация ходьбы
+        ChangeAnimation("OrcWalk"); 
         AdjustFacing(targetPosition);
     }
 
     private IEnumerator AttackRoutine()
     {
         _isAttacking = true;
-        ChangeAnimation("OrcAttack"); // Анимация атаки
+        ChangeAnimation("OrcAttack"); 
 
-        // Ожидание момента в анимации, когда наносится урон (например, в момент удара)
-        yield return new WaitForSeconds(1); // Предполагается, что удар происходит через 1 секунду после начала анимации
+        yield return new WaitForSeconds(1); 
 
-        // Повторная проверка расстояния перед нанесением урона
         if (Vector3.Distance(transform.position, player.transform.position) <= attackDistance)
         {
             playerCharacter.TakeDamage(damage);
         }
 
-        yield return new WaitForSeconds(attackCooldown - 1); // Остаток времени кулдауна
+        yield return new WaitForSeconds(attackCooldown - 1); 
         _isAttacking = false;
     }
 

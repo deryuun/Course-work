@@ -10,7 +10,6 @@ public class MagicianEnemy : Enemy
     public float attackCooldown = 5f;
     private bool _isAttacking = false;
     private bool _attackRoutineActive = false;
-    public int damage = 1;
 
     public EnemyWeapon weapon;
     

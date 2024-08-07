@@ -6,11 +6,12 @@ public class Weapon : MonoBehaviour
 {
     public Transform firePoint;
     public GameObject magicPrefab;
-    public Camera mainCamera; // Обеспечивает ссылку на камеру
-
+    public Camera mainCamera;
+    public GameObject player;
+    
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1")  && !player.GetComponent<PowerPlayerController>().isFrozen)
         {
             Shoot();
         }
